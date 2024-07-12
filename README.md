@@ -1,46 +1,93 @@
 # Solidity
-MyToken Smart Contract
-This is a simple ERC-20 token smart contract written in Solidity.
 
-Features
-Stores token details: name, abbreviation, and total supply.
-Tracks individual user balances using a mapping.
-Provides functions for minting and burning tokens.
+## MyToken Contract
+
+### Overview
+
+The MyToken contract is a simple ERC-20 like token implementation in Solidity. This smart contract allows for minting and burning of tokens. It includes public variables to store token details and mappings to keep track of balances. Below is a detailed description of the contract's functionality and how to use it.
+
 Requirements
-Solidity compiler version ^0.8.18 or later.
-Deployment
-Compile the contract using solc MyToken.sol.
-Deploy the contract to your preferred blockchain network.
+Public Variables:
+
+tokenName: Stores the name of the token.
+tokenAbbrv: Stores the abbreviation of the token.
+totalSupply: Stores the total supply of the token.
+Mappings:
+
+balances: Maps addresses to their respective token balances.
+Functions:
+
+mint: Increases the total supply and the balance of a specified address.
+burn: Decreases the total supply and the balance of a specified address, ensuring the address has enough balance to burn.
+Contract Details
+Public Variables
+```string public tokenName = "EMIRU";```
+
+The name of the token.
+```string public tokenAbbrv = "EMI";```
+
+The abbreviation of the token.
+```uint public totalSupply = 0;```
+
+The total supply of the token.
+Mappings
+```mapping(address => uint) public balances;```
+This mapping keeps track of each address's token balance.
+Functions
+
+Mint
+```solidity
+function mint(address _address, uint _value) public {
+    totalSupply += _value;
+    balances[_address] += _value;
+}
+```
+Parameters:
+_address: The address to which tokens will be minted.
+_value: The number of tokens to mint.
+
+Functionality:
+Increases the totalSupply by _value.
+Increases the balance of _address by _value.
+
+Burn
+```solidity
+function burn(address _address, uint _value) public {
+    if(balances[_address] >= _value) {
+        totalSupply -= _value;
+        balances[_address] -= _value;
+    }
+}
+```
+Parameters:
+_address: The address from which tokens will be burned.
+_value: The number of tokens to burn.
+Functionality:
+
+Checks if the balance of _address is greater than or equal to _value.
+If true, decreases the totalSupply by _value.
+Decreases the balance of _address by _value.
 Usage
-Minting:
 
-Use the mint function to create new tokens and assign them to an address.
+Deploying the Contract:
+Deploy the MyToken contract to your preferred Ethereum network.
 
-Solidity
-contract MyContract {
-  function someFunction() public {
-    MyToken token = new MyToken();
-    token.mint(msg.sender, 100); // Mint 100 tokens to the sender address
-  }
-}
+Minting Tokens:
+Call the mint function with the desired address and value to increase the total supply and the balance of the specified address.
 
-content_copy
-Burning:
+Burning Tokens:
+Call the burn function with the desired address and value to decrease the total supply and the balance of the specified address, provided the address has enough balance.
 
-Use the burn function to destroy existing tokens from an address.
+Example
+Minting 100 tokens to address 0x123...789:
 
-Solidity
-contract MyContract {
-  function someFunction() public {
-    MyToken token = new MyToken();
-    token.burn(msg.sender, 50); // Burn 50 tokens from the sender address
-  }
-}
+```solidity
+mint(0x1234567890abcdef1234567890abcdef12345678, 100);
 
-content_copy
-Important Note:
+burn(0x1234567890abcdef1234567890abcdef12345678, 50);
+```
+## License
+This project is licensed under the MIT License.
 
-The burn function includes a safety check to ensure the sender has enough balance before burning tokens.
 
-License
-This contract is licensed under the MIT License.
+// SPDX-License-Identifier: MIT
